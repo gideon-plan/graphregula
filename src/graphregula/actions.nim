@@ -1,6 +1,6 @@
 ## actions.nim -- Rule actions that modify graph.
 {.experimental: "strict_funcs".}
-import lattice
+import basis/code/choice
 
 type
   GraphActionKind* = enum
@@ -13,7 +13,7 @@ type
     target_id*: int
     label*: string
 
-  GraphMutateFn* = proc(action: GraphAction): Result[void, BridgeError] {.raises: [].}
+  GraphMutateFn* = proc(action: GraphAction): Choice[bool] {.raises: [].}
 
 proc add_node_action*(id: int, label: string = ""): GraphAction =
   GraphAction(kind: gaAddNode, node_id: id, label: label)
@@ -27,5 +27,5 @@ proc add_edge_action*(source, target: int, label: string = ""): GraphAction =
 proc remove_edge_action*(source, target: int): GraphAction =
   GraphAction(kind: gaRemoveEdge, source_id: source, target_id: target)
 
-proc execute*(action: GraphAction, mutate_fn: GraphMutateFn): Result[void, BridgeError] =
+proc execute*(action: GraphAction, mutate_fn: GraphMutateFn): Choice[bool] =
   mutate_fn(action)

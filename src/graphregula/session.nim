@@ -1,6 +1,6 @@
 ## session.nim -- Combined graph + regula lifecycle.
 {.experimental: "strict_funcs".}
-import lattice, events, actions
+import basis/code/choice, events, actions
 
 type
   GraphRegulaSession* = object
@@ -16,7 +16,7 @@ proc fire_event*(s: var GraphRegulaSession, event: GraphEvent) =
   s.event_handler(event)
   inc s.events_fired
 
-proc execute_action*(s: var GraphRegulaSession, action: GraphAction): Result[void, BridgeError] =
+proc execute_action*(s: var GraphRegulaSession, action: GraphAction): Choice[bool] =
   let r = execute(action, s.mutate_fn)
   if r.is_good: inc s.actions_executed
   r
