@@ -3,8 +3,8 @@
 import basis/code/choice
 
 type
-  GraphActionKind* = enum
-    gaAddNode, gaRemoveNode, gaAddEdge, gaRemoveEdge
+  GraphActionKind* {.pure.} = enum
+    AddNode, RemoveNode, AddEdge, RemoveEdge
 
   GraphAction* = object
     kind*: GraphActionKind
@@ -16,16 +16,16 @@ type
   GraphMutateFn* = proc(action: GraphAction): Choice[bool] {.raises: [].}
 
 proc add_node_action*(id: int, label: string = ""): GraphAction =
-  GraphAction(kind: gaAddNode, node_id: id, label: label)
+  GraphAction(kind: GraphActionKind.AddNode, node_id: id, label: label)
 
 proc remove_node_action*(id: int): GraphAction =
-  GraphAction(kind: gaRemoveNode, node_id: id)
+  GraphAction(kind: GraphActionKind.RemoveNode, node_id: id)
 
 proc add_edge_action*(source, target: int, label: string = ""): GraphAction =
-  GraphAction(kind: gaAddEdge, source_id: source, target_id: target, label: label)
+  GraphAction(kind: GraphActionKind.AddEdge, source_id: source, target_id: target, label: label)
 
 proc remove_edge_action*(source, target: int): GraphAction =
-  GraphAction(kind: gaRemoveEdge, source_id: source, target_id: target)
+  GraphAction(kind: GraphActionKind.RemoveEdge, source_id: source, target_id: target)
 
 proc execute*(action: GraphAction, mutate_fn: GraphMutateFn): Choice[bool] =
   mutate_fn(action)

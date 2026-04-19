@@ -5,16 +5,16 @@ import graphregula
 suite "events":
   test "create events":
     let e1 = node_added(1, "test")
-    check e1.kind == geNodeAdded
+    check e1.kind == GraphEventKind.NodeAdded
     check e1.node_id == 1
     let e2 = edge_added(1, 2, "connects")
-    check e2.kind == geEdgeAdded
+    check e2.kind == GraphEventKind.EdgeAdded
     check e2.source_id == 1
 
 suite "actions":
   test "create actions":
     let a = add_node_action(5, "new_node")
-    check a.kind == gaAddNode
+    check a.kind == GraphActionKind.AddNode
     check a.node_id == 5
 
 suite "triggers":

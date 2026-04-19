@@ -2,8 +2,8 @@
 {.experimental: "strict_funcs".}
 
 type
-  GraphEventKind* = enum
-    geNodeAdded, geNodeRemoved, geEdgeAdded, geEdgeRemoved
+  GraphEventKind* {.pure.} = enum
+    NodeAdded, NodeRemoved, EdgeAdded, EdgeRemoved
 
   GraphEvent* = object
     kind*: GraphEventKind
@@ -15,13 +15,13 @@ type
   EventHandler* = proc(event: GraphEvent) {.raises: [].}
 
 proc node_added*(id: int, label: string = ""): GraphEvent =
-  GraphEvent(kind: geNodeAdded, node_id: id, label: label)
+  GraphEvent(kind: GraphEventKind.NodeAdded, node_id: id, label: label)
 
 proc node_removed*(id: int): GraphEvent =
-  GraphEvent(kind: geNodeRemoved, node_id: id)
+  GraphEvent(kind: GraphEventKind.NodeRemoved, node_id: id)
 
 proc edge_added*(source, target: int, label: string = ""): GraphEvent =
-  GraphEvent(kind: geEdgeAdded, source_id: source, target_id: target, label: label)
+  GraphEvent(kind: GraphEventKind.EdgeAdded, source_id: source, target_id: target, label: label)
 
 proc edge_removed*(source, target: int): GraphEvent =
-  GraphEvent(kind: geEdgeRemoved, source_id: source, target_id: target)
+  GraphEvent(kind: GraphEventKind.EdgeRemoved, source_id: source, target_id: target)
